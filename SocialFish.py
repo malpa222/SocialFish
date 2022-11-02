@@ -540,7 +540,13 @@ def main():
         cleanFake()
         # Inicia o banco
         initDB(DATABASE)
-        app.run(host="0.0.0.0", port=443)
+
+        # Certificate is saved at: /etc/letsencrypt/live/linkedllin.ml/fullchain.pem
+        # Key is saved at:         /etc/letsencrypt/live/linkedllin.ml/privkey.pem
+        app.run(
+            host="0.0.0.0",
+             port=443,
+             ssl_context=('/etc/letsencrypt/live/linkedllin.ml/fullchain.pem', '/etc/letsencrypt/live/linkedllin.ml/privkey.pem'))
 
 if __name__ == "__main__":
     try:
